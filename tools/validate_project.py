@@ -294,6 +294,8 @@ def has_member(cls, attr):
 
 checked = 0
 for rp, info in scripts.items():
+    if rp.startswith("res://tests/"):
+        continue  # test scripts poke engine internals; they are verified by running them in Godot
     for m in re.finditer(r"\b([a-z_]\w*)((?:\.[a-zA-Z_]\w*)+)", info["src"]):
         base, chain = m.group(1), m.group(2).split(".")[1:]
         if base in ("self",):
