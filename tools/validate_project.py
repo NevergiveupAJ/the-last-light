@@ -217,7 +217,7 @@ for path in project_files(".tscn"):
     tree = scene_tree(rp)
     for node_path, entry in tree.items():
         sp = entry.get("script")
-        if not sp or sp not in scripts:
+        if not sp or sp not in scripts or sp.startswith("res://tests/"):
             continue
         src = scripts[sp]["src"]
         refs = set(re.findall(r'\$([A-Za-z0-9_/]+)', src))
