@@ -11,7 +11,8 @@ Version 0.1.1, a Godot 4.3 vertical slice. Tested in Godot 4.3 on 2026-10-28.
 | Automated playthrough in the real engine (`tests/playthrough_test.tscn`): 45 checks covering walking, sprint, crouch, every pickup reachable, 3 fuses, items, 5 documents, monster sight, attacks and cooldown, walls blocking sight, hearing, navigation into the server room, flare distraction, touch stick / look / buttons, gate, final chase, walking out the gate, true ending | **45 / 45 passed** |
 | Real rendered screenshots of the menu, all 6 locations, The Hollow and third person (`docs/screenshots/`) | Done |
 | `tools/validate_project.py` and the GDScript syntax parser | Passed |
-| Played by a person, or run on a real phone | **Not yet.** Still needed for feel, difficulty and performance. |
+| Web version live at https://the-last-light.miliusjonathan68.workers.dev, loaded and played in a phone-sized browser (touch tap starts a game) | **Works** |
+| Played by a person on a real phone | **Not yet.** Still needed for feel, difficulty and performance. |
 
 Run the tests yourself:
 ```

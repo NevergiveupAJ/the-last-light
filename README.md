@@ -6,7 +6,11 @@ You wake at 2:17 AM in an abandoned forest research station. Find three power fu
 
 **Start with `STATUS.md`.** It lists exactly what's finished and what isn't, and how it was checked.
 
-## Run it
+## Play on a phone
+Open **https://the-last-light.miliusjonathan68.workers.dev** in Safari or Chrome and turn the phone sideways.
+Hosted on the Cloudflare Worker `the-last-light`. Every push to `main` redeploys it. After changing the game, run `sh tools/export_web.sh` and commit `web/`.
+
+## Run it on a computer
 1. Install **Godot 4.3** (standard build) from godotengine.org.
 2. In Godot, choose Import and pick this folder's `project.godot`.
 3. Press **Play** (F5).
