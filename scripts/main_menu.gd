@@ -47,7 +47,7 @@ func _ready() -> void:
 	back_button.pressed.connect(func() -> void: panel.visible = false)
 	store.purchase_failed.connect(func(_id: String, reason: String) -> void: _show_store(reason))
 	# Apple does not allow a Quit button on iOS.
-	quit_button.visible = not OS.has_feature("ios")
+	quit_button.visible = not (OS.has_feature("ios") or OS.has_feature("web"))
 	panel.visible = false
 	_update_stats()
 	new_game_button.grab_focus()

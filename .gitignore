@@ -4,3 +4,4 @@ builds/**/*.apk
 builds/**/*.aab
 builds/**/*.ipa
 __pycache__/
+build/

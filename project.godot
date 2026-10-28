@@ -97,5 +97,10 @@ pointing/emulate_touch_from_mouse=false
 [rendering]
 
 renderer/rendering_method="mobile"
+renderer/rendering_method.web="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
 lights_and_shadows/directional_shadow/size=2048
+
+[audio]
+
+general/default_playback_type.web=0
