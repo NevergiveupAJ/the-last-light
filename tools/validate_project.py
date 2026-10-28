@@ -278,7 +278,8 @@ def class_of(info, name):
 ENGINE_MEMBERS = {
     "position", "global_position", "rotation", "rotation_degrees", "scale", "transform", "global_transform",
     "basis", "visible", "name", "velocity", "get_tree", "get_node", "get_parent", "add_child", "queue_free",
-    "get_rid", "is_in_group", "has_method", "call", "set_process", "process_mode", "show", "hide", "size",
+    "get_rid", "is_in_group", "has_method", "call", "set_process", "set_physics_process", "is_physics_processing",
+    "process_mode", "show", "hide", "size", "look_at", "head",
 }
 
 

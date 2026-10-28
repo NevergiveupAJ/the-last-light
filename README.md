@@ -27,8 +27,15 @@ TheLastLight/
                  code_guide, concepts/ (design sheets), original_starter/ (your original kit)
   builds/        android/ and ios/ build instructions
   prototype_html/ the original browser prototype, unchanged
+  tests/         automated playthrough + screenshot maker
   tools/validate_project.py   static checker (no Godot needed)
 ```
+
+## Tests
+```
+godot --headless --path . res://tests/playthrough_test.tscn   # 45-check automated playthrough
+```
+Screenshots: `docs/screenshots/`.
 
 ## Check the project without Godot
 ```

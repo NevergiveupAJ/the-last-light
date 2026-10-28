@@ -19,7 +19,7 @@ const PIT := Rect2(Vector2(-50, -92), Vector2(28, 20))
 const PIT_FLOOR := -4.0
 
 var patrol_points: Array[Node3D] = []
-var final_chase_spawn := Vector3(18, 0.3, -88)
+var final_chase_spawn := Vector3(30, 0.3, -78)
 var nav_ready := false
 
 var _m := {}

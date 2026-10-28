@@ -4,7 +4,7 @@ class_name EmergencyGate
 ## the gate then grinds open slowly (the final chase) and the exit trigger behind it wins the game.
 
 @export var open_distance := 6.4
-@export var open_time := 7.0
+@export var open_time := 6.0
 
 var powered := false
 var _alarm_time := 0.0

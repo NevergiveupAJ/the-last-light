@@ -22,5 +22,5 @@ Built by `scripts/world_builder.gd`. Coordinates are metres, X = east, -Z = nort
  z=+23 ───────────────── south fence ─────────────────
 ```
 - The Hollow starts at (26, -48) and patrols 10 points (one is inside the tunnels).
-- The final chase spawn is (18, -88).
+- The final chase spawn is (30, -78), about 40 m from the gate, which opens in 6 s.
 - Navigation is baked at startup: cell 0.4 m, agent radius 0.5 m, height 2.4 m, max slope 40°.

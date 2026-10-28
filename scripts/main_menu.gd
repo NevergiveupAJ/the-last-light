@@ -119,7 +119,7 @@ func _store_row(id: String, item_name: String, desc: String, price: String) -> C
 	var button := Button.new()
 	button.custom_minimum_size = Vector2(170, 56)
 	if id == "default" or store.is_owned(id):
-		var equipped := store.is_equipped(id) or (id == "default" and SaveSystem.cosmetics["equipped_outfit"] == "default" and SaveSystem.cosmetics["equipped_flashlight"] == "default")
+		var equipped: bool = store.is_equipped(id) or (id == "default" and SaveSystem.cosmetics["equipped_outfit"] == "default" and SaveSystem.cosmetics["equipped_flashlight"] == "default")
 		button.text = "Equipped" if equipped else "Equip"
 		button.disabled = equipped
 		button.pressed.connect(func() -> void:

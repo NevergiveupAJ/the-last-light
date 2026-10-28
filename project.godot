@@ -5,7 +5,7 @@ config_version=5
 
 config/name="THE LAST LIGHT"
 config/description="Survive. Find. Escape. A mobile 3D survival horror vertical slice."
-config/version="0.1.0"
+config/version="0.1.1"
 run/main_scene="res://scenes/MainMenu.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://icon.svg"
@@ -92,6 +92,7 @@ pointing/emulate_touch_from_mouse=false
 
 3d/default_cell_size=0.4
 3d/default_cell_height=0.25
+3d/merge_rasterizer_cell_scale=0.001
 
 [rendering]
 

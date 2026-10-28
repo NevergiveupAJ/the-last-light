@@ -1,17 +1,23 @@
 # THE LAST LIGHT: what's finished and what isn't
 
-Version 0.1.0, a Godot 4.3 vertical slice. Last checked 2026-10-28.
+Version 0.1.1, a Godot 4.3 vertical slice. Tested in Godot 4.3 on 2026-10-28.
 
 ## How this was checked (read this first)
 
 | Check | Result |
 |---|---|
-| GDScript syntax, all 25 scripts (gdtoolkit 4.3.3 parser) | **Passed** |
-| `tools/validate_project.py`: scene files, resource ids, node paths used by scripts, input actions, `res://` files, method, property and signal names across the project's own classes | **Passed** (146 cross-file checks) |
-| Validator self-test (I broke a node name, an input action and a method name on purpose) | All 3 problems were caught |
-| Opened in the Godot editor, played, exported to a phone | **Not done.** I couldn't install Godot in this environment. |
+| Opened in **Godot 4.3** (editor import, headless) | **No errors.** Fixed 1 type error in the menu along the way. |
+| Game started and run for 25 seconds | **No script errors** |
+| Automated playthrough in the real engine (`tests/playthrough_test.tscn`): 45 checks covering walking, sprint, crouch, every pickup reachable, 3 fuses, items, 5 documents, monster sight, attacks and cooldown, walls blocking sight, hearing, navigation into the server room, flare distraction, touch stick / look / buttons, gate, final chase, walking out the gate, true ending | **45 / 45 passed** |
+| Real rendered screenshots of the menu, all 6 locations, The Hollow and third person (`docs/screenshots/`) | Done |
+| `tools/validate_project.py` and the GDScript syntax parser | Passed |
+| Played by a person, or run on a real phone | **Not yet.** Still needed for feel, difficulty and performance. |
 
-So the files are consistent with each other and free of syntax errors. They have **not been run**. Expect a few small runtime fixes the first time it's opened in Godot, such as a light that's too bright, a prop that needs moving, or a warning to clear. Do the first-run checklist at the bottom before trusting anything else in this file.
+Run the tests yourself:
+```
+godot --headless --path . res://tests/playthrough_test.tscn
+```
+(The only output besides the results is a harmless "mesh is null" message that headless mode prints.)
 
 ## Finished (written, wired together, and passing the checks above)
 
@@ -73,7 +79,7 @@ So the files are consistent with each other and free of syntax errors. They have
 
 | Area | What's missing |
 |---|---|
-| **Testing** | Never opened in Godot, never played, never run on a phone. This is the biggest gap. |
+| **Human and phone testing** | It passes automated tests in Godot, but nobody has played it by hand or run it on a phone yet. |
 | **Real 3D art** | Alex, The Hollow and every building are stand-in shapes. Realistic rigged models and textures still have to be made or bought (prompts are in `docs/asset_prompts.md`). |
 | **Real audio** | Only the synthesized stand-ins exist. No composed music or recorded sound effects yet. |
 | **Real purchases** | Apple and Google billing, a server that checks receipts, restoring purchases, refunds, privacy policy. Not started, and intentionally switched off. |
@@ -87,7 +93,7 @@ So the files are consistent with each other and free of syntax errors. They have
 | **Performance tuning on real phones** | Shadows, the number of lights, fog and the navigation bake time still need measuring on low-end devices. |
 
 ## First-run checklist (in Godot 4.3)
-1. Open `project.godot`. Let Godot import, then check the **Output** panel for red errors.
+1. Open `project.godot` and let Godot import (it was clean in testing).
 2. Press Play. The main menu should show the key art.
 3. Press New Game. Watch for "navigation map" warnings, then walk to the generator station, the research facility server room and the tunnels.
 4. Turn on The Hollow's debug label (TheHollow scene, `show_debug_label`) to watch its states.
