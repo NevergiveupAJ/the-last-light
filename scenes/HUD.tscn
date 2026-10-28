@@ -1,0 +1,363 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
+[ext_resource type="Script" path="res://scripts/settings_panel.gd" id="2_settings"]
+
+[node name="HUD" type="CanvasLayer"]
+process_mode = 3
+layer = 5
+script = ExtResource("1_hud")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="DamageFlash" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.6, 0, 0, 0)
+
+[node name="Bars" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 16.0
+offset_right = 300.0
+offset_bottom = 170.0
+mouse_filter = 2
+
+[node name="HealthLabel" type="Label" parent="Root/Bars"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "HEALTH"
+
+[node name="Health" type="ProgressBar" parent="Root/Bars"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 14)
+mouse_filter = 2
+value = 100.0
+show_percentage = false
+
+[node name="StaminaLabel" type="Label" parent="Root/Bars"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "STAMINA"
+
+[node name="Stamina" type="ProgressBar" parent="Root/Bars"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 14)
+mouse_filter = 2
+value = 100.0
+show_percentage = false
+
+[node name="BatteryLabel" type="Label" parent="Root/Bars"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "FLASHLIGHT"
+
+[node name="Battery" type="ProgressBar" parent="Root/Bars"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 14)
+mouse_filter = 2
+value = 100.0
+show_percentage = false
+
+[node name="Objective" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -330.0
+offset_top = 14.0
+offset_right = 330.0
+offset_bottom = 80.0
+grow_horizontal = 2
+horizontal_alignment = 1
+autowrap_mode = 3
+text = "Find the power fuses."
+
+[node name="Clock" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -480.0
+offset_top = 16.0
+offset_right = -200.0
+offset_bottom = 44.0
+grow_horizontal = 0
+horizontal_alignment = 2
+text = "2:17 AM"
+
+[node name="Fuses" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -480.0
+offset_top = 46.0
+offset_right = -200.0
+offset_bottom = 74.0
+grow_horizontal = 0
+horizontal_alignment = 2
+text = "Fuses 0 / 3"
+
+[node name="Docs" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -480.0
+offset_top = 76.0
+offset_right = -200.0
+offset_bottom = 104.0
+grow_horizontal = 0
+horizontal_alignment = 2
+text = "Documents 0 / 5"
+
+[node name="Crosshair" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -15.0
+offset_right = 10.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "+"
+modulate = Color(1, 1, 1, 0.5)
+
+[node name="Prompt" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -330.0
+offset_right = 320.0
+offset_bottom = -290.0
+grow_horizontal = 2
+grow_vertical = 0
+horizontal_alignment = 1
+
+[node name="Message" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -380.0
+offset_top = -170.0
+offset_right = 380.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Caption" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -280.0
+offset_right = 320.0
+offset_bottom = -245.0
+grow_horizontal = 2
+grow_vertical = 0
+horizontal_alignment = 1
+modulate = Color(0.85, 0.85, 1, 1)
+
+[node name="InventoryPanel" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -220.0
+offset_right = 280.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Root/InventoryPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Root/InventoryPanel/VBox"]
+layout_mode = 2
+text = "INVENTORY"
+horizontal_alignment = 1
+
+[node name="Items" type="VBoxContainer" parent="Root/InventoryPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Close" type="Button" parent="Root/InventoryPanel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+text = "Close"
+
+[node name="DocumentPanel" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -230.0
+offset_right = 340.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Root/DocumentPanel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="Root/DocumentPanel/VBox"]
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Body" type="Label" parent="Root/DocumentPanel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(620, 0)
+size_flags_vertical = 3
+autowrap_mode = 3
+
+[node name="Close" type="Button" parent="Root/DocumentPanel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+text = "Close"
+
+[node name="PausePanel" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -300.0
+offset_right = 340.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Root/PausePanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Root/PausePanel/VBox"]
+layout_mode = 2
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="Scroll" type="ScrollContainer" parent="Root/PausePanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Settings" type="VBoxContainer" parent="Root/PausePanel/VBox/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("2_settings")
+
+[node name="Buttons" type="HBoxContainer" parent="Root/PausePanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Resume" type="Button" parent="Root/PausePanel/VBox/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+text = "Resume"
+size_flags_horizontal = 3
+
+[node name="Restart" type="Button" parent="Root/PausePanel/VBox/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+text = "Restart"
+size_flags_horizontal = 3
+
+[node name="Menu" type="Button" parent="Root/PausePanel/VBox/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+text = "Main Menu"
+size_flags_horizontal = 3
+
+[node name="EndPanel" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -240.0
+offset_right = 350.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Root/EndPanel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="Root/EndPanel/VBox"]
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Body" type="Label" parent="Root/EndPanel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(640, 0)
+size_flags_vertical = 3
+autowrap_mode = 3
+
+[node name="Stats" type="Label" parent="Root/EndPanel/VBox"]
+layout_mode = 2
+horizontal_alignment = 1
+modulate = Color(0.8, 0.85, 1, 1)
+
+[node name="Buttons" type="HBoxContainer" parent="Root/EndPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Retry" type="Button" parent="Root/EndPanel/VBox/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+text = "Try Again"
+size_flags_horizontal = 3
+
+[node name="Menu" type="Button" parent="Root/EndPanel/VBox/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+text = "Main Menu"
+size_flags_horizontal = 3

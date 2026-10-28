@@ -1,0 +1,6 @@
+.godot/
+*.import
+builds/**/*.apk
+builds/**/*.aab
+builds/**/*.ipa
+__pycache__/

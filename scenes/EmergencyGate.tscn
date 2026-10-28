@@ -1,0 +1,132 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://scripts/emergency_gate.gd" id="1_gate"]
+[ext_resource type="Script" path="res://scripts/gate_control_box.gd" id="2_box"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_post"]
+size = Vector3(0.6, 5, 0.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_post"]
+size = Vector3(0.6, 5, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_metal"]
+albedo_color = Color(0.25, 0.26, 0.28, 1)
+metallic = 0.7
+roughness = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_beam"]
+size = Vector3(7.4, 0.5, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_door"]
+size = Vector3(6, 4, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_door"]
+size = Vector3(6, 4, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_door"]
+albedo_color = Color(0.33, 0.24, 0.16, 1)
+metallic = 0.5
+roughness = 0.7
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_box"]
+size = Vector3(0.8, 1.2, 0.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_box"]
+size = Vector3(0.8, 1.2, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_box"]
+albedo_color = Color(0.55, 0.45, 0.12, 1)
+metallic = 0.4
+roughness = 0.6
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exit"]
+size = Vector3(8, 3, 2)
+
+[node name="EmergencyGate" type="Node3D"]
+script = ExtResource("1_gate")
+
+[node name="PostLeft" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4, 2.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PostLeft"]
+shape = SubResource("BoxShape3D_post")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PostLeft"]
+mesh = SubResource("BoxMesh_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_metal")
+
+[node name="PostRight" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 2.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PostRight"]
+shape = SubResource("BoxShape3D_post")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PostRight"]
+mesh = SubResource("BoxMesh_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_metal")
+
+[node name="Beam" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, 0)
+mesh = SubResource("BoxMesh_beam")
+surface_material_override/0 = SubResource("StandardMaterial3D_metal")
+
+[node name="Sign" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, 0.32)
+pixel_size = 0.006
+modulate = Color(1, 0.85, 0.3, 1)
+outline_size = 8
+text = "EMERGENCY EXIT"
+font_size = 64
+
+[node name="GateDoor" type="AnimatableBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -0.5)
+sync_to_physics = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GateDoor"]
+shape = SubResource("BoxShape3D_door")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GateDoor"]
+mesh = SubResource("BoxMesh_door")
+surface_material_override/0 = SubResource("StandardMaterial3D_door")
+
+[node name="ControlBox" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 1.2, 0.8)
+collision_layer = 9
+collision_mask = 0
+script = ExtResource("2_box")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ControlBox"]
+shape = SubResource("BoxShape3D_box")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ControlBox"]
+mesh = SubResource("BoxMesh_box")
+surface_material_override/0 = SubResource("StandardMaterial3D_box")
+
+[node name="Label3D" type="Label3D" parent="ControlBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0.05)
+pixel_size = 0.004
+outline_size = 8
+text = "GATE POWER
+INSERT 3 FUSES"
+font_size = 48
+
+[node name="StatusLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 2.0, 1.2)
+light_color = Color(1, 0.1, 0.05, 1)
+light_energy = 1.5
+omni_range = 4.0
+
+[node name="AlarmLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8, 0.5)
+visible = false
+light_color = Color(1, 0.1, 0.05, 1)
+light_energy = 2.0
+omni_range = 18.0
+
+[node name="ExitTrigger" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -6)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExitTrigger"]
+shape = SubResource("BoxShape3D_exit")

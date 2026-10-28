@@ -1,0 +1,17 @@
+AssetType,AssetName,Description,Priority,Format
+Character,Alex_Player,Survivor full body rig with walk sprint crouch jump hurt death,Required,GLB
+Monster,The_Hollow,Tall gaunt creature rig with patrol chase attack stagger death,Required,GLB
+Environment,Forest_Pines,Pine trees rocks roots grass and ground materials,Required,GLB
+Environment,Research_Station,Abandoned modular lab building interior exterior,Required,GLB
+Environment,Cabins,Small abandoned cabins with doors windows furniture,Required,GLB
+Environment,Maintenance_Tunnels,Concrete tunnels pipes cables puddles,Required,GLB
+Prop,Emergency_Gate,Metal sliding gate and fuse control box,Required,GLB
+Prop,Power_Fuse,Industrial fuse collectible,Required,GLB
+Prop,Flashlight,Handheld flashlight with emissive lens,Required,GLB
+Prop,Flare,One-use red flare prop,Optional,GLB
+Prop,Medkit,First aid pouch,Optional,GLB
+UI,HUD,Health stamina battery objective fuse count,Required,PNG/SVG
+UI,Store_Icons,Square icons for cosmetic products,Optional,PNG
+Audio,Monster_Foley,Footsteps breathing attacks distant calls,Required,WAV/OGG
+Audio,Ambience,Wind rain creaks electrical hum,Required,WAV/OGG
+Audio,Music,Adaptive horror score and escape cue,Optional,WAV/OGG

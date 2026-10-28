@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#080b0d">
+<title>THE LAST LIGHT — Horror Survival</title>
+<style>
+:root{--red:#c23d38;--green:#b4d5b5;--panel:rgba(7,11,13,.86)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050708;color:#e9eee9;font-family:system-ui,-apple-system,Segoe UI,sans-serif;touch-action:none}
+#game{position:fixed;inset:0;width:100%;height:100%;display:block;background:#080b0d}
+.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 25%,rgba(0,0,0,.32) 68%,rgba(0,0,0,.92) 115%);z-index:2}
+#hud{position:fixed;z-index:4;inset:0;pointer-events:none;padding:14px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;text-shadow:0 2px 5px #000}
+.brand{font-size:12px;letter-spacing:.22em;font-weight:900;color:#d9e1dd}
+.sub{font-size:10px;letter-spacing:.12em;color:#98a6a1;margin-top:3px}
+.stats{display:flex;gap:8px}
+.pill{background:rgba(5,8,9,.72);border:1px solid #ffffff20;border-radius:9px;padding:7px 10px;min-width:68px;text-align:center}
+.pill b{display:block;font-size:15px;line-height:1.2}.pill small{font-size:9px;letter-spacing:.12em;color:#a9b5b0}
+#objective{position:absolute;top:76px;left:50%;transform:translateX(-50%);background:rgba(3,6,7,.7);border:1px solid #ffffff18;border-radius:8px;padding:8px 12px;font-size:11px;white-space:nowrap;letter-spacing:.04em}
+#message{position:absolute;left:50%;top:26%;transform:translateX(-50%);width:min(88%,420px);text-align:center;font-weight:700;font-size:13px;letter-spacing:.05em;text-shadow:0 2px 7px #000;opacity:0;transition:opacity .2s}
+#crosshair{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;opacity:.65}
+#crosshair:before,#crosshair:after{content:"";position:absolute;background:#d8e5df;box-shadow:0 0 5px #fff}
+#crosshair:before{width:1px;height:14px;left:6px}#crosshair:after{height:1px;width:14px;top:6px}
+#bottom{position:absolute;bottom:15px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.hint{font-size:10px;color:#aab7b0;max-width:145px;text-shadow:0 2px 5px #000;line-height:1.4}
+#battery{height:6px;width:92px;border:1px solid #aebdb6;border-radius:8px;margin-top:5px;overflow:hidden;background:#101719}
+#batteryFill{height:100%;width:100%;background:#cbdacb;transition:width .15s}
+.controls{pointer-events:auto;display:flex;align-items:flex-end;gap:9px}
+.pad{display:grid;grid-template-columns:42px 42px 42px;grid-template-rows:42px 42px;gap:4px;opacity:.83}
+.ctrl,.action{color:#eaf1eb;background:rgba(11,17,18,.72);border:1px solid #ffffff3b;border-radius:12px;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;user-select:none;touch-action:none;box-shadow:0 3px 10px #0007}
+.ctrl:active,.action:active{background:rgba(104,133,118,.75);transform:scale(.97)}
+.pad .up{grid-column:2;grid-row:1}.pad .left{grid-column:1;grid-row:2}.pad .down{grid-column:2;grid-row:2}.pad .right{grid-column:3;grid-row:2}
+.actions{display:flex;flex-direction:column;gap:7px}
+.action{width:66px;height:47px;font-size:10px;letter-spacing:.04em;flex-direction:column;gap:2px}
+.action span{font-size:17px}
+#startScreen,#endScreen{position:fixed;z-index:10;inset:0;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(180deg,rgba(2,5,6,.56),rgba(2,5,6,.93)),radial-gradient(ellipse at 50% 38%,#263832,#060809 70%);text-align:center}
+.card{width:min(100%,440px);padding:25px 22px 22px;border:1px solid #ffffff25;border-radius:20px;background:linear-gradient(145deg,rgba(22,31,30,.92),rgba(5,8,9,.96));box-shadow:0 20px 80px #0009}
+.eyebrow{font-size:10px;letter-spacing:.3em;color:#a5b9ad;font-weight:800}
+h1{font-size:clamp(38px,11vw,62px);line-height:.94;margin:13px 0 12px;letter-spacing:-.06em}
+h1 em{font-style:normal;color:#b64943}
+.desc{font-size:13px;line-height:1.6;color:#c0cbc5;margin:0 auto 18px;max-width:330px}
+.objectives{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:15px 0 20px}
+.objectives span{font-size:10px;border:1px solid #ffffff20;border-radius:20px;padding:7px 10px;color:#d0d9d4}
+.startBtn{border:0;border-radius:12px;background:#c23d38;color:white;font-weight:900;letter-spacing:.1em;padding:15px 22px;width:100%;font-size:13px;box-shadow:0 5px 20px #9b242644}
+.small{font-size:10px;color:#84918b;line-height:1.5;margin-top:13px}
+#endScreen{display:none}
+@media(min-width:700px){#bottom{max-width:780px;left:50%;right:auto;width:calc(100% - 36px);transform:translateX(-50%)}.pad{grid-template-columns:48px 48px 48px;grid-template-rows:48px 48px}.action{width:76px;height:52px}}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas><div class="vignette"></div>
+<div id="hud" style="display:none">
+ <div class="top"><div><div class="brand">THE LAST LIGHT</div><div class="sub">FIELD LOG // 02:17 AM</div></div>
+ <div class="stats"><div class="pill"><b id="fuses">0 / 3</b><small>FUSES</small></div><div class="pill"><b id="health">100%</b><small>HEALTH</small></div></div></div>
+ <div id="objective">FIND 3 FUSES · REACH THE EXIT</div><div id="message"></div><div id="crosshair"></div>
+ <div id="bottom"><div class="hint"><div id="hintText">KEEP MOVING. DON'T LET IT GET CLOSE.</div><div style="margin-top:8px;font-size:9px;letter-spacing:.12em">FLASHLIGHT POWER</div><div id="battery"><div id="batteryFill"></div></div></div>
+ <div class="controls"><div class="pad"><button class="ctrl up" data-move="forward">▲</button><button class="ctrl left" data-move="turnL">◀</button><button class="ctrl down" data-move="back">▼</button><button class="ctrl right" data-move="turnR">▶</button></div><div class="actions"><button class="action" id="lightBtn"><span>◉</span>LIGHT</button><button class="action" id="runBtn"><span>»</span>SPRINT</button><button class="action" id="useBtn"><span>✚</span>INTERACT</button></div></div></div>
+</div>
+<div id="startScreen"><div class="card"><div class="eyebrow">A FIRST-PERSON SURVIVAL NIGHTMARE</div><h1>THE LAST<br><em>LIGHT</em></h1><p class="desc">The forest research station went dark at 2:17 AM. Find three power fuses, restore the gate, and escape before something finds you.</p><div class="objectives"><span>◈ 3 FUSES</span><span>◉ FLASHLIGHT</span><span>☠ ONE HUNTER</span></div><button class="startBtn" id="startBtn">ENTER THE DARK</button><div class="small">Mobile controls included · Headphones recommended<br>Fictional horror game. Survive if you can.</div></div></div>
+<div id="endScreen"><div class="card"><div class="eyebrow" id="endEyebrow">FIELD LOG CLOSED</div><h1 id="endTitle">YOU<br><em>ESCAPED</em></h1><p class="desc" id="endDesc">You made it out alive.</p><button class="startBtn" id="againBtn">PLAY AGAIN</button><div class="small">THE WOODS ARE NEVER REALLY EMPTY.</div></div></div>
+<script>
+(()=> {
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+let W=innerWidth,H=innerHeight,frame=0,started=false,ended=false,last=0;
+const map=[
+"111111111111111111",
+"100000000100000001",
+"101110000100111101",
+"100010000000100001",
+"100010111100100101",
+"100000100000000001",
+"111000100111110001",
+"100000000100000001",
+"101111000100110101",
+"100001000000010001",
+"100001111100010001",
+"100000000000000001",
+"101110111011110101",
+"100000100000000001",
+"100000000111000001",
+"111111111111111111"
+];
+const MW=map[0].length,MH=map.length;
+let player,monster,fuses,exit,keys,flashOn,battery,health,elapsed,noticeTimer,damageCooldown,won,runHeld;
+function reset(){player={x:2.5,y:1.5,a:0.12};monster={x:14.5,y:13.5,alert:0};fuses=[{x:7.5,y:3.5,taken:false},{x:12.5,y:7.5,taken:false},{x:3.5,y:13.5,taken:false}];exit={x:16.3,y:1.5};keys={};flashOn=true;battery=100;health=100;elapsed=0;noticeTimer=0;damageCooldown=0;won=false;runHeld=false;frame=0;ended=false;document.getElementById('fuses').textContent='0 / 3';document.getElementById('health').textContent='100%';document.getElementById('objective').textContent='FIND 3 FUSES · REACH THE EXIT';document.getElementById('batteryFill').style.width='100%';}
+function resize(){W=canvas.width=Math.floor(innerWidth*Math.min(devicePixelRatio||1,1.6));H=canvas.height=Math.floor(innerHeight*Math.min(devicePixelRatio||1,1.6));canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';}
+addEventListener('resize',resize);resize();reset();
+function wall(x,y){let ix=Math.floor(x),iy=Math.floor(y);return iy<0||iy>=MH||ix<0||ix>=MW||map[iy][ix]==='1';}
+function blocked(x,y){return wall(x-.16,y-.16)||wall(x+.16,y-.16)||wall(x-.16,y+.16)||wall(x+.16,y+.16);}
+function moveEntity(e,dx,dy){if(!blocked(e.x+dx,e.y))e.x+=dx;if(!blocked(e.x,e.y+dy))e.y+=dy;}
+function say(s,t=2){let m=document.getElementById('message');m.textContent=s;m.style.opacity=1;noticeTimer=t;}
+function interact(){if(!started||ended)return;let near=fuses.find(f=>!f.taken&&Math.hypot(player.x-f.x,player.y-f.y)<1.15);if(near){near.taken=true;let n=fuses.filter(f=>f.taken).length;document.getElementById('fuses').textContent=n+' / 3';say('FUSE RECOVERED  ·  '+n+' OF 3',2.4);if(n===3){document.getElementById('objective').textContent='GATE POWER RESTORED · REACH THE EXIT';say('POWER RESTORED. GET TO THE EXIT!',3)}return;}if(Math.hypot(player.x-exit.x,player.y-exit.y)<1.25){if(fuses.every(f=>f.taken)){finish(true)}else say('THE GATE IS DEAD. FIND ALL 3 FUSES.',2)}else say('NOTHING WITHIN REACH.',1.3);}
+function finish(win){ended=true;won=win;document.getElementById('endScreen').style.display='flex';document.getElementById('endEyebrow').textContent=win?'SURVIVAL CONFIRMED':'SIGNAL LOST';document.getElementById('endTitle').innerHTML=win?'YOU<br><em>ESCAPED</em>':'IT FOUND<br><em>YOU</em>';document.getElementById('endDesc').textContent=win?`You restored the gate and escaped in ${Math.floor(elapsed/60)}m ${Math.floor(elapsed%60)}s. The forest falls silent behind you.`:'The hunter caught your scent in the dark. The station has claimed another soul.';}
+function castRay(a){let sin=Math.sin(a),cos=Math.cos(a),dist=0,hit=0,side=0;for(let i=0;i<950;i++){dist+=.025;let x=player.x+cos*dist,y=player.y+sin*dist;if(wall(x,y)){hit=1;let fx=x-Math.floor(x),fy=y-Math.floor(y);side=(Math.abs(fx-.5)>Math.abs(fy-.5))?0:1;break;}}return {dist:Math.max(.025,dist),hit,side};}
+function drawWorld(){
+let horizon=H*.49;
+let sky=ctx.createLinearGradient(0,0,0,horizon);sky.addColorStop(0,'#080d10');sky.addColorStop(1,'#27302d');ctx.fillStyle=sky;ctx.fillRect(0,0,W,horizon);
+let floor=ctx.createLinearGradient(0,horizon,0,H);floor.addColorStop(0,'#222725');floor.addColorStop(1,'#050707');ctx.fillStyle=floor;ctx.fillRect(0,horizon,W,H-horizon);
+for(let i=1;i<18;i++){let yy=horizon+(H-horizon)*(i/18)*(i/18);ctx.strokeStyle='rgba(165,183,167,'+(0.025+i*.001)+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,yy);ctx.lineTo(W,yy);ctx.stroke();}
+const fov=Math.PI/2.85,cols=Math.min(Math.ceil(W/2),540),step=W/cols;
+for(let i=0;i<cols;i++){let a=player.a-fov/2+(i/cols)*fov;let r=castRay(a),d=r.dist*Math.cos(a-player.a),wallH=Math.min(H*2,H*.86/d),top=horizon-wallH/2;
+let texture=(Math.floor((player.x+Math.cos(a)*d)*7)+Math.floor((player.y+Math.sin(a)*d)*9))%3;
+let shade=Math.max(8,Math.min(95,105/(1+d*.42)));if(r.side)shade*=.68;
+let red=texture===0?shade*.57:shade*.65,green=texture===1?shade*.75:shade*.82,blue=shade*.75;
+ctx.fillStyle=`rgb(${red|0},${green|0},${blue|0})`;ctx.fillRect(i*step,top,step+1,wallH);
+if((i+texture*7)%13<2){ctx.fillStyle='rgba(0,0,0,.22)';ctx.fillRect(i*step,top,step+1,wallH);}
+ctx.fillStyle='rgba(0,0,0,'+Math.min(.86,d*.045)+')';ctx.fillRect(i*step,top,step+1,wallH);
+}
+drawSprites(fov,horizon);
+drawLight(horizon);
+}
+function drawSprites(fov,horizon){
+let sprites=[];
+fuses.filter(f=>!f.taken).forEach(f=>sprites.push({x:f.x,y:f.y,type:'fuse'}));
+sprites.push({x:exit.x,y:exit.y,type:'exit'});
+sprites.push({x:monster.x,y:monster.y,type:'monster'});
+sprites.sort((a,b)=>Math.hypot(b.x-player.x,b.y-player.y)-Math.hypot(a.x-player.x,a.y-player.y));
+for(let s of sprites){let dx=s.x-player.x,dy=s.y-player.y,d=Math.hypot(dx,dy),ang=Math.atan2(dy,dx)-player.a;while(ang>Math.PI)ang-=Math.PI*2;while(ang< -Math.PI)ang+=Math.PI*2;if(Math.abs(ang)>fov*.7||d<.1)continue;let sx=(.5+ang/fov)*W,scale=H/d*.45,sy=horizon;
+let ray=castRay(player.a+ang);if(ray.dist<d-.25)continue;
+if(s.type==='fuse'){let size=Math.max(3,Math.min(30,scale*.15));ctx.save();ctx.translate(sx,sy+scale*.34);ctx.shadowBlur=18;ctx.shadowColor='#d6e9c7';ctx.fillStyle='#d8e6c9';ctx.fillRect(-size/2,-size/2,size,size*1.4);ctx.fillStyle='#526c58';ctx.fillRect(-size/3,-size/3,size*.66,size*.25);ctx.restore();}
+else if(s.type==='exit'){let w=Math.min(W*.3,scale*.58),h=Math.min(H*.8,scale*1.6);ctx.fillStyle='rgba(110,165,128,.16)';ctx.fillRect(sx-w/2,sy-h/2,w,h);ctx.strokeStyle='#91b79a';ctx.lineWidth=3;ctx.strokeRect(sx-w/2,sy-h/2,w,h);ctx.fillStyle='#b6d5bd';ctx.font=`bold ${Math.max(10,scale*.13)}px sans-serif`;ctx.textAlign='center';ctx.fillText('EXIT',sx,sy-h*.58);}
+else{let w=Math.min(W*.45,scale*.55),h=Math.min(H*1.4,scale*1.6),y=sy-h*.48;let near=1-Math.min(d/8,1);ctx.save();ctx.translate(sx,y);ctx.shadowColor='#000';ctx.shadowBlur=22;
+ctx.fillStyle='#050606';ctx.beginPath();ctx.ellipse(0,-h*.23,w*.25,h*.17,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#101414';ctx.beginPath();ctx.moveTo(-w*.24,-h*.12);ctx.lineTo(-w*.38,h*.35);ctx.lineTo(-w*.22,h*.49);ctx.lineTo(-w*.12,h*.05);ctx.lineTo(w*.12,h*.05);ctx.lineTo(w*.22,h*.49);ctx.lineTo(w*.38,h*.35);ctx.lineTo(w*.24,-h*.12);ctx.closePath();ctx.fill();
+ctx.fillStyle='#a9332e';ctx.shadowColor='#d92e27';ctx.shadowBlur=10+near*18;ctx.fillRect(-w*.13,-h*.25,w*.07,Math.max(2,h*.018));ctx.fillRect(w*.06,-h*.25,w*.07,Math.max(2,h*.018));ctx.restore();}
+}
+function drawLight(horizon){
+let cx=W/2,cy=H*.53;let glow=ctx.createRadialGradient(cx,cy,10,cx,cy,W*.65);glow.addColorStop(0,flashOn&&battery>0?'rgba(205,218,191,.13)':'rgba(0,0,0,.2)');glow.addColorStop(.4,flashOn&&battery>0?'rgba(145,170,145,.045)':'rgba(0,0,0,.4)');glow.addColorStop(1,'rgba(0,0,0,.82)');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+if(!flashOn||battery<=0){ctx.fillStyle='rgba(0,0,0,.48)';ctx.fillRect(0,0,W,H);}
+if(health<40){ctx.fillStyle=`rgba(125,0,0,${(40-health)/150})`;ctx.fillRect(0,0,W,H);}
+}
+function update(dt){
+if(!started||ended)return;elapsed+=dt;frame++;
+if(noticeTimer>0){noticeTimer-=dt;if(noticeTimer<=0)document.getElementById('message').style.opacity=0;}
+if(damageCooldown>0)damageCooldown-=dt;
+if(flashOn&&battery>0){battery=Math.max(0,battery-dt*.48);if(battery===0)say('FLASHLIGHT BATTERY DEAD.',3);}
+document.getElementById('batteryFill').style.width=battery+'%';
+let speed=runHeld?2.45:1.48,turn=2.05;
+if(keys.turnL)player.a-=turn*dt;if(keys.turnR)player.a+=turn*dt;
+let dx=0,dy=0;if(keys.forward){dx+=Math.cos(player.a);dy+=Math.sin(player.a)}if(keys.back){dx-=Math.cos(player.a);dy-=Math.sin(player.a)}
+if(dx||dy){let len=Math.hypot(dx,dy);moveEntity(player,dx/len*speed*dt,dy/len*speed*dt);monster.alert=Math.min(1,monster.alert+dt*.07);}
+let md=Math.hypot(player.x-monster.x,player.y-monster.y);
+if(md<8){let ang=Math.atan2(player.y-monster.y,player.x-monster.x);let ms=(md<3?1.02:.65)*dt;moveEntity(monster,Math.cos(ang)*ms,Math.sin(ang)*ms);}
+if(md<.72&&damageCooldown<=0){health-=17;damageCooldown=1.1;say('IT HIT YOU! KEEP MOVING!',1.2);document.getElementById('health').textContent=Math.max(0,health)+'%';if(health<=0)finish(false);}
+if(md<4.8&&Math.random()<dt*.22)say('YOU HEAR IT BREATHING...',1.1);
+if(Math.hypot(player.x-exit.x,player.y-exit.y)<1.15&&fuses.every(f=>f.taken)){say('TAP INTERACT TO ESCAPE',.7);}
+}
+function render(t){let dt=Math.min(.045,(t-last)/1000||.016);last=t;ctx.save();if(health<40&&frame%4<2)ctx.translate((Math.random()-.5)*3,(Math.random()-.5)*3);drawWorld();ctx.restore();update(dt);requestAnimationFrame(render);}
+requestAnimationFrame(render);
+document.getElementById('startBtn').addEventListener('click',()=>{document.getElementById('startScreen').style.display='none';document.getElementById('hud').style.display='block';started=true;last=performance.now();say('FIND THE FUSES. WATCH THE SHADOWS.',3);});
+document.getElementById('againBtn').addEventListener('click',()=>{reset();document.getElementById('endScreen').style.display='none';document.getElementById('hud').style.display='block';started=true;last=performance.now();say('IT IS OUT THERE AGAIN.',2);});
+document.querySelectorAll('[data-move]').forEach(b=>{let k=b.dataset.move;const on=e=>{e.preventDefault();keys[k]=true;};const off=e=>{e.preventDefault();keys[k]=false;};b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointercancel',off);b.addEventListener('pointerleave',off);});
+document.getElementById('lightBtn').addEventListener('click',()=>{flashOn=!flashOn;say(flashOn&&battery>0?'FLASHLIGHT ON':'FLASHLIGHT OFF',1);});
+document.getElementById('runBtn').addEventListener('pointerdown',e=>{e.preventDefault();runHeld=true;});['pointerup','pointercancel','pointerleave'].forEach(ev=>document.getElementById('runBtn').addEventListener(ev,()=>runHeld=false));
+document.getElementById('useBtn').addEventListener('click',interact);
+addEventListener('keydown',e=>{let m={w:'forward',ArrowUp:'forward',s:'back',ArrowDown:'back',a:'turnL',ArrowLeft:'turnL',d:'turnR',ArrowRight:'turnR',Shift:'sprint',e:'interact',f:'light'};if(m[e.key]){e.preventDefault();if(m[e.key]==='sprint')runHeld=true;else if(m[e.key]==='interact')interact();else if(m[e.key]==='light'){flashOn=!flashOn;}else keys[m[e.key]]=true;}});
+addEventListener('keyup',e=>{let m={w:'forward',ArrowUp:'forward',s:'back',ArrowDown:'back',a:'turnL',ArrowLeft:'turnL',d:'turnR',ArrowRight:'turnR',Shift:'sprint'};if(m[e.key]){if(m[e.key]==='sprint')runHeld=false;else keys[m[e.key]]=false;}});
+canvas.addEventListener('pointerdown',e=>{if(!started||ended)return;canvas._touchX=e.clientX;canvas._touchY=e.clientY;});
+canvas.addEventListener('pointermove',e=>{if(e.pointerType==='touch'&&canvas._touchX!=null&&e.buttons){let delta=e.clientX-canvas._touchX;player.a+=delta*.006;canvas._touchX=e.clientX;canvas._touchY=e.clientY;}});
+canvas.addEventListener('pointerup',()=>{canvas._touchX=null;canvas._touchY=null;});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/monster.gd" id="1_monster"]
+[ext_resource type="Script" path="res://scripts/hollow_model.gd" id="2_model"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hollow"]
+radius = 0.4
+height = 2.4
+
+[node name="TheHollow" type="CharacterBody3D" groups=["monster"]]
+collision_layer = 4
+collision_mask = 3
+floor_max_angle = 0.785398
+script = ExtResource("1_monster")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("CapsuleShape3D_hollow")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.8
+target_desired_distance = 1.0
+height = 2.4
+radius = 0.5
+
+[node name="ModelRoot" type="Node3D" parent="."]
+script = ExtResource("2_model")
+
+[node name="Eyes" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, -0.15)
+
+[node name="DebugLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+visible = false
+billboard = 1
+text = "PATROL"

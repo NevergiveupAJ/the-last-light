@@ -1,0 +1,70 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/world_builder.gd" id="2_level"]
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="3_player"]
+[ext_resource type="PackedScene" path="res://scenes/TheHollow.tscn" id="4_hollow"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="5_gm"]
+[ext_resource type="PackedScene" path="res://scenes/HUD.tscn" id="6_hud"]
+[ext_resource type="PackedScene" path="res://scenes/MobileControls.tscn" id="7_touch"]
+[ext_resource type="Script" path="res://scripts/audio_manager.gd" id="8_audio"]
+[ext_resource type="Script" path="res://scripts/weather.gd" id="9_weather"]
+
+[sub_resource type="Environment" id="Environment_night"]
+background_mode = 1
+background_color = Color(0.015, 0.02, 0.035, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.16, 0.19, 0.27, 1)
+ambient_light_energy = 0.4
+tonemap_mode = 2
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.06, 0.075, 0.1, 1)
+fog_density = 0.03
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_level"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 1
+cell_size = 0.4
+cell_height = 0.25
+agent_height = 2.4
+agent_radius = 0.5
+agent_max_climb = 0.5
+agent_max_slope = 40.0
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_night")
+
+[node name="Moon" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, 0, -0.5, -0.383022, 0.642788, -0.663414, 0.321394, 0.766044, 0.55667, 0, 30, 0)
+light_color = Color(0.55, 0.65, 0.9, 1)
+light_energy = 0.25
+shadow_enabled = true
+directional_shadow_max_distance = 60.0
+
+[node name="Level" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_level")
+script = ExtResource("2_level")
+
+[node name="Player" parent="." instance=ExtResource("3_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 17)
+
+[node name="TheHollow" parent="." instance=ExtResource("4_hollow")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0.1, -48)
+
+[node name="GameManager" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("5_gm")
+
+[node name="Weather" type="Node3D" parent="."]
+script = ExtResource("9_weather")
+
+[node name="AudioManager" type="Node" parent="."]
+script = ExtResource("8_audio")
+
+[node name="HUD" parent="." instance=ExtResource("6_hud")]
+
+[node name="MobileControls" parent="." instance=ExtResource("7_touch")]
